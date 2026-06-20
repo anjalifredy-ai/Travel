@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YatraSetu – Book Flights, Trains, Buses & Hotels</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#FF6B00;
+  --orange2:#FF8C00;
+  --orange-light:#FFF2E7;
+  --orange-mid:#FFE0C2;
+  --dark:#1A1A2E;
+  --blue:#1565C0;
+  --green:#00897B;
+  --text:#2C2C2C;
+  --muted:#6B7280;
+  --border:#E5E7EB;
+  --bg:#F8F9FA;
+  --white:#FFFFFF;
+  --shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--dark);color:rgba(255,255,255,0.8);font-size:0.76rem;text-align:center;padding:5px 12px}
+.topbar b{color:#FFD54F}
+
+/* ── NAVBAR ── */
+nav{
+  background:#fff;border-bottom:1px solid var(--border);
+  height:58px;display:flex;align-items:center;
+  padding:0 24px;gap:20px;position:sticky;top:0;z-index:300;
+  box-shadow:0 1px 6px rgba(0,0,0,0.06)
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:900;color:#fff
+}
+.logo-name{font-size:1.25rem;font-weight:900;color:var(--dark);letter-spacing:-0.5px}
+.logo-name span{color:var(--orange)}
+
+.nav-pills{display:flex;gap:2px;flex:1;justify-content:center}
+.np{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;
+  border-radius:8px;border:none;background:none;font-family:inherit;
+  font-size:0.83rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s
+}
+.np:hover{background:var(--orange-light);color:var(--orange)}
+.np.active{background:var(--orange-light);color:var(--orange)}
+.np .ni{font-size:1rem}
+
+.nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-txt{font-size:0.8rem;color:var(--muted);font-weight:500;cursor:pointer;padding:6px 8px;border-radius:6px}
+.nav-txt:hover{color:var(--orange)}
+.btn-login{
+  background:var(--orange);color:#fff;border:none;
+  padding:7px 18px;border-radius:8px;font-family:inherit;
+  font-size:0.83rem;font-weight:700;cursor:pointer;transition:background .2s
+}
+.btn-login:hover{background:#e05a00}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,#1A1A2E 0%,#2D1B00 50%,#4A2800 100%);
+  padding:40px 20px 0;position:relative;overflow:hidden
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,107,0,.2) 0%,transparent 70%);border-radius:50%
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:48px;
+  background:var(--bg);border-radius:24px 24px 0 0
+}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,107,0,.2);border:1px solid rgba(255,107,0,.4);
+  color:#FFB74D;font-size:0.75rem;font-weight:700;
+  padding:4px 12px;border-radius:20px;margin-bottom:14px
+}
+.hero-h{color:#fff;font-size:clamp(1.4rem,3.5vw,2.1rem);font-weight:900;line-height:1.2;margin-bottom:6px}
+.hero-h span{color:var(--orange)}
+.hero-sub{color:rgba(255,255,255,.6);font-size:0.88rem;margin-bottom:26px}
+
+/* ── SEARCH CARD ── */
+.sc{
+  background:#fff;border-radius:18px;
+  box-shadow:0 12px 48px rgba(0,0,0,.2);
+  overflow:hidden
+}
+/* Tab row inside card */
+.sc-tabs{
+  display:flex;border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none
+}
+.sc-tabs::-webkit-scrollbar{display:none}
+.sc-tab{
+  flex-shrink:0;padding:13px 20px;border:none;border-bottom:2px solid transparent;
+  background:none;font-family:inherit;font-size:0.82rem;font-weight:600;
+  color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s
+}
+.sc-tab.active{color:var(--orange);border-bottom-color:var(--orange)}
+.sc-tab:hover:not(.active){color:var(--text)}
+
+/* Panels */
+.sc-body{padding:22px 20px 20px}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Trip type */
+.trip-row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.tr-label{display:flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;cursor:pointer;color:var(--text)}
+.tr-label input{accent-color:var(--orange)}
+
+/* Fields */
+.fields{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.fg{flex:1;min-width:140px}
+.fg label{display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px}
+.fg input,.fg select{
+  width:100%;padding:11px 14px 11px 36px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:inherit;font-size:0.88rem;color:var(--text);
+  background:#FAFBFF;outline:none;transition:border .2s
+}
+.fg input:focus,.fg select:focus{border-color:var(--orange)}
+.fi-wrap{position:relative}
+.fi-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.95rem;pointer-events:none}
+.swap-col{display:flex;align-items:flex-end;padding-bottom:2px}
+.swap-ico{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--orange-light);border:1.5px solid var(--orange-mid);
+  color:var(--orange);display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;cursor:pointer;transition:all .2s;flex-shrink:0
+}
+.swap-ico:hover{background:var(--orange);color:#fff}
+.go-btn{
+  background:var(--orange);color:#fff;border:none;
+  padding:11px 28px;border-radius:10px;font-family:inherit;
+  font-size:.9rem;font-weight:800;cursor:pointer;flex-shrink:0;
+  letter-spacing:.3px;transition:background .2s
+}
+.go-btn:hover{background:#e05a00}
+
+/* Special fares */
+.sf-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.sf-label{font-size:.72rem;color:var(--muted);font-weight:600}
+.sf-chip{
+  padding:4px 12px;border-radius:20px;border:1.5px solid var(--border);
+  font-size:.73rem;font-weight:600;cursor:pointer;background:#fff;color:var(--muted);transition:all .2s
+}
+.sf-chip:hover,.sf-chip.on{background:var(--orange-light);border-color:var(--orange);color:var(--orange)}
+
+/* Date strip */
+.ds-wrap{border-top:1px solid var(--border);padding-top:14px;margin-top:16px}
+.ds-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px}
+.ds{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.ds::-webkit-scrollbar{display:none}
+.dc{
+  flex-shrink:0;min-width:52px;padding:7px 8px;border-radius:10px;
+  border:1.5px solid var(--border);text-align:center;cursor:pointer;
+  background:#fff;transition:all .18s
+}
+.dc:hover{border-color:var(--orange)}
+.dc.on{background:var(--orange);border-color:var(--orange);color:#fff}
+.dc .dd{font-size:.65rem;opacity:.7}
+.dc .dn{font-size:.95rem;font-weight:800}
+
+/* ── MAIN ── */
+.main{max-width:1100px;margin:0 auto;padding:28px 16px 80px}
+
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.st{font-size:1.05rem;font-weight:800;color:var(--dark)}
+.st em{color:var(--orange);font-style:normal}
+.va{font-size:.8rem;font-weight:700;color:var(--orange);cursor:pointer}
+.va:hover{text-decoration:underline}
+
+/* Quick tools */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-bottom:32px}
+.tool-card{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s
+}
+.tool-card:hover{border-color:var(--orange);box-shadow:0 4px 12px rgba(255,107,0,.1);transform:translateY(-2px)}
+.tool-ico{font-size:1.5rem;margin-bottom:6px}
+.tool-lbl{font-size:.72rem;font-weight:700;color:var(--text)}
+.tool-sub{font-size:.63rem;color:var(--muted);margin-top:2px}
+
+/* Stats */
+.stats{
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  border-radius:16px;display:flex;margin-bottom:32px;overflow:hidden
+}
+.stat{flex:1;padding:18px 12px;text-align:center;border-right:1px solid rgba(255,255,255,.2)}
+.stat:last-child{border-right:none}
+.stat .sn{font-size:1.2rem;font-weight:900;color:#fff}
+.stat .sl{font-size:.7rem;color:rgba(255,255,255,.8);margin-top:3px}
+
+/* Offers scroll */
+.offer-scroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:32px}
+.offer-scroll::-webkit-scrollbar{display:none}
+.oc{
+  flex-shrink:0;width:210px;border-radius:14px;overflow:hidden;
+  border:1px solid var(--border);background:#fff;cursor:pointer;transition:box-shadow .2s
+}
+.oc:hover{box-shadow:0 6px 20px rgba(255,107,0,.15)}
+.oc-img{
+  height:105px;display:flex;align-items:center;justify-content:center;font-size:2rem
+}
+.oc-body{padding:10px 12px}
+.oc-title{font-size:.8rem;font-weight:700}
+.oc-code{font-size:.72rem;color:var(--orange);font-weight:600;margin-top:3px}
+
+/* Popular routes */
+.routes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-bottom:32px}
+.rc{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:13px 14px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:11px
+}
+.rc:hover{border-color:var(--orange);box-shadow:0 4px 14px rgba(255,107,0,.1)}
+.rc-ico{font-size:1.4rem;flex-shrink:0}
+.rc-from{font-size:.82rem;font-weight:700}
+.rc-arrow{font-size:.7rem;color:var(--muted);margin:2px 0}
+.rc-price{font-size:.75rem;color:var(--orange);font-weight:700}
+
+/* Airlines */
+.airlines{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin-bottom:32px;padding-bottom:2px}
+.airlines::-webkit-scrollbar{display:none}
+.al{
+  flex-shrink:0;background:#fff;border:1.5px solid var(--border);
+  border-radius:12px;padding:10px 16px;font-size:.8rem;font-weight:700;
+  cursor:pointer;transition:all .2s;white-space:nowrap;color:var(--text)
+}
+.al:hover{border-color:var(--orange);color:var(--orange)}
+
+/* Why section */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px;margin-bottom:32px}
+.wc{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px}
+.wi{font-size:1.7rem;margin-bottom:8px}
+.wt{font-size:.85rem;font-weight:700;margin-bottom:3px}
+.wd{font-size:.75rem;color:var(--muted);line-height:1.5}
+
+/* News */
+.news-scroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin-bottom:32px;padding-bottom:4px}
+.news-scroll::-webkit-scrollbar{display:none}
+.news-card{
+  flex-shrink:0;width:230px;background:#fff;border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;cursor:pointer;transition:box-shadow .2s
+}
+.news-card:hover{box-shadow:0 6px 18px rgba(0,0,0,.1)}
+.news-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:2.2rem}
+.news-body{padding:12px}
+.news-tag{font-size:.65rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.news-title{font-size:.8rem;font-weight:700;line-height:1.4}
+
+/* Download banner */
+.dl{
+  background:linear-gradient(135deg,#1A1A2E,#2D1B00);
+  border-radius:18px;padding:28px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:32px
+}
+.dl-l{color:#fff}
+.dl-l h3{font-size:1.2rem;font-weight:900;margin-bottom:6px}
+.dl-l p{font-size:.82rem;color:rgba(255,255,255,.65);margin-bottom:12px}
+.dl-code{
+  display:inline-block;background:rgba(255,107,0,.2);
+  border:1.5px dashed rgba(255,107,0,.6);color:#FFB74D;
+  padding:5px 14px;border-radius:8px;font-size:.83rem;font-weight:800
+}
+.dl-r{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dl-rating{text-align:center;color:#fff}
+.dl-rating .dr-stars{font-size:.9rem;color:#FFD54F}
+.dl-rating .dr-num{font-size:1.4rem;font-weight:900}
+.dl-rating .dr-lbl{font-size:.68rem;color:rgba(255,255,255,.6)}
+.dl-btns{display:flex;flex-direction:column;gap:8px}
+.dl-btn{
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);
+  color:#fff;padding:9px 18px;border-radius:10px;font-family:inherit;
+  font-size:.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap
+}
+.dl-btn:hover{background:rgba(255,255,255,.2)}
+
+/* Footer */
+footer{background:var(--dark);color:rgba(255,255,255,.5)}
+.ft-inner{max-width:1100px;margin:0 auto;padding:32px 16px 16px}
+.ft-logo{font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:16px}
+.ft-logo span{color:var(--orange)}
+.ft-links{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.ft-links a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.76rem;padding:3px 8px;border-radius:4px}
+.ft-links a:hover{color:var(--orange)}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.07);padding:14px 16px;text-align:center;font-size:.76rem}
+
+/* Bottom Nav */
+.bnav{
+  position:fixed;bottom:0;left:0;right:0;background:#fff;
+  border-top:1px solid var(--border);display:flex;z-index:400;
+  padding:6px 0 8px
+}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.bn-i{font-size:1.2rem}
+.bn-l{font-size:.6rem;font-weight:600;color:var(--muted)}
+.bn.on .bn-l{color:var(--orange)}
+
+/* Search Results */
+.res-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-end}
+.res-overlay.open{display:flex}
+.res-sheet{
+  background:var(--bg);border-radius:24px 24px 0 0;
+  width:100%;max-height:88vh;overflow-y:auto;padding:20px 16px 100px
+}
+.res-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.res-hdr h3{font-size:1rem;font-weight:800}
+.res-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted)}
+.filters{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
+.filters::-webkit-scrollbar{display:none}
+.fc{
+  flex-shrink:0;padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);
+  background:#fff;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--muted)
+}
+.fc.on{background:var(--orange-light);border-color:var(--orange);color:var(--orange)}
+.bus-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px}
+.bc-top{display:flex;justify-content:space-between;margin-bottom:10px}
+.bc-op{font-size:.9rem;font-weight:800}
+.bc-type{font-size:.7rem;background:#FFF3E0;color:var(--orange);padding:3px 8px;border-radius:20px;font-weight:600;margin-top:3px;display:inline-block}
+.bc-price{font-size:1.1rem;font-weight:900;color:var(--orange)}
+.bc-seats{font-size:.7rem;color:var(--green);font-weight:600}
+.bc-timing{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bc-t{font-size:1rem;font-weight:800}
+.bc-dur{flex:1;text-align:center;font-size:.72rem;color:var(--muted)}
+.bc-line{height:1px;background:var(--border);margin:3px 0;position:relative}
+.bc-line::after{content:'🚌';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:.85rem}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font-size:.67rem;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:20px;color:var(--muted)}
+.sel-btn{background:var(--orange);color:#fff;border:none;padding:10px;border-radius:10px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;width:100%}
+
+/* Login Modal */
+.m-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;align-items:center;justify-content:center}
+.m-overlay.open{display:flex}
+.modal{background:#fff;border-radius:18px;padding:28px 24px;max-width:370px;width:90%;position:relative}
+.modal h3{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.modal p{font-size:.82rem;color:var(--muted);margin-bottom:20px}
+.m-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.modal input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:.9rem;margin-bottom:12px;outline:none}
+.modal input:focus{border-color:var(--orange)}
+.m-btn{width:100%;background:var(--orange);color:#fff;border:none;padding:12px;border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer}
+.m-note{text-align:center;margin-top:10px;font-size:.75rem;color:var(--muted)}
+
+@media(max-width:640px){
+  .nav-pills{display:none}
+  .fields{flex-direction:column}
+  .stats{flex-wrap:wrap}
+  .stat{min-width:48%;border-bottom:1px solid rgba(255,255,255,.15)}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">✈️ <b>GETAPP</b> lagao — App pe 25% extra OFF milega | India ka sabse tez travel booking platform</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-mark">Y</div>
+    <div class="logo-name">Yatra<span>Setu</span></div>
+  </a>
+  <div class="nav-pills">
+    <button class="np active" onclick="switchTab('flight',this)"><span class="ni">✈️</span> Flights</button>
+    <button class="np" onclick="switchTab('hotel',this)"><span class="ni">🏨</span> Hotels</button>
+    <button class="np" onclick="switchTab('train',this)"><span class="ni">🚆</span> Trains</button>
+    <button class="np" onclick="switchTab('bus',this)"><span class="ni">🚌</span> Buses</button>
+  </div>
+  <div class="nav-r">
+    <span class="nav-txt">Offers</span>
+    <span class="nav-txt">Help</span>
+    <button class="btn-login" onclick="openLogin()">Login / Sign Up</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">🇮🇳 India's Fastest Growing Travel Platform</div>
+    <div class="hero-h">Book <span>Flights, Trains,</span><br>Buses & Hotels — Sab Ek Jagah</div>
+    <div class="hero-sub">Lowest fares · Instant confirmation · 24/7 support · Free cancellation</div>
+
+    <!-- SEARCH CARD -->
+    <div class="sc">
+      <div class="sc-tabs">
+        <button class="sc-tab active" onclick="switchTab('flight',this)"><span>✈️</span> Flights</button>
+        <button class="sc-tab" onclick="switchTab('hotel',this)"><span>🏨</span> Hotels</button>
+        <button class="sc-tab" onclick="switchTab('train',this)"><span>🚆</span> Trains</button>
+        <button class="sc-tab" onclick="switchTab('bus',this)"><span>🚌</span> Buses</button>
+        <button class="sc-tab" onclick="switchTab('holiday',this)"><span>🌴</span> Holidays</button>
+      </div>
+      <div class="sc-body">
+
+        <!-- FLIGHT PANEL -->
+        <div class="panel active" id="p-flight">
+          <div class="trip-row">
+            <label class="tr-label"><input type="radio" name="ft" checked> One Way</label>
+            <label class="tr-label"><input type="radio" name="ft"> Round Trip</label>
+            <label class="tr-label"><input type="radio" name="ft"> Multi-City</label>
+          </div>
+          <div class="fields">
+            <div class="fg">
+              <label>From</label>
+              <div class="fi-wrap"><span class="fi-ico">🛫</span><input id="f-from" type="text" placeholder="Delhi (DEL)"></div>
+            </div>
+            <div class="swap-col"><div class="swap-ico" onclick="sw('f-from','f-to')">⇄</div></div>
+            <div class="fg">
+              <label>To</label>
+              <div class="fi-wrap"><span class="fi-ico">🛬</span><input id="f-to" type="text" placeholder="Mumbai (BOM)"></div>
+            </div>
+            <div class="fg" style="max-width:150px">
+              <label>Depart</label>
+              <div class="fi-wrap"><span class="fi-ico">📅</span><input id="f-date" type="date"></div>
+            </div>
+            <div class="fg" style="max-width:150px">
+              <label>Travellers & Class</label>
+              <div class="fi-wrap">
+                <span class="fi-ico">👤</span>
+                <select><option>1, Economy</option><option>2, Economy</option><option>1, Business</option><option>2, Business</option></select>
+  </div>
+  
