@@ -1,264 +1,311 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InternTube</title>
-
+<title>ViewTube</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+:root {
+  --bg:#0f0f0f; --surface:#1a1a1a; --surface2:#272727; --border:#3f3f3f;
+  --text:#f1f1f1; --text2:#aaa; --text3:#717171;
+  --accent:#ff0000; --accent2:#cc0000;
+  --shadow:0 4px 16px rgba(0,0,0,.5);
+  --radius:12px;
 }
-
-body{
-    background:#0f0f0f;
-    color:white;
-    overflow-x:hidden;
-    padding-bottom:70px;
+[data-theme="light"]{
+  --bg:#fff; --surface:#f2f2f2; --surface2:#e5e5e5; --border:#e0e0e0;
+  --text:#0f0f0f; --text2:#606060; --text3:#909090;
+  --shadow:0 2px 8px rgba(0,0,0,.12);
 }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'YouTube Sans','Roboto',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-header{
-    position:sticky;
-    top:0;
-    background:#0f0f0f;
-    padding:10px;
-    border-bottom:1px solid #222;
-    z-index:1000;
+/* ===== PAGES ===== */
+.page{display:none;} .page.active{display:block;}
+
+/* ===== TOPBAR ===== */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;background:var(--bg);position:sticky;top:0;z-index:200;border-bottom:1px solid var(--border);}
+.tb-left{display:flex;align-items:center;gap:16px;}
+.hamburger{background:none;border:none;cursor:pointer;color:var(--text);font-size:20px;padding:8px;border-radius:50%;}
+.hamburger:hover{background:var(--surface2);}
+.brand{display:flex;align-items:center;gap:4px;cursor:pointer;text-decoration:none;}
+.brand-icon{width:28px;height:20px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.brand-icon::after{content:'▶';color:#fff;font-size:11px;}
+.brand-name{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.5px;}
+.brand-name span{color:var(--accent);}
+
+/* Search bar */
+.tb-search{display:flex;align-items:center;gap:8px;flex:1;max-width:600px;margin:0 24px;}
+.search-form{display:flex;flex:1;border:1px solid var(--border);border-radius:40px;overflow:hidden;}
+.search-input{flex:1;padding:8px 18px;background:var(--surface);color:var(--text);border:none;font-size:15px;outline:none;}
+.search-input::placeholder{color:var(--text3);}
+.search-submit{background:var(--surface2);border:none;border-left:1px solid var(--border);padding:0 20px;cursor:pointer;color:var(--text2);font-size:18px;transition:background .2s;}
+.search-submit:hover{background:var(--surface);}
+.mic-btn{background:var(--surface2);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.mic-btn:hover{background:var(--surface);}
+
+.tb-right{display:flex;align-items:center;gap:6px;}
+.icon-btn{background:none;border:none;cursor:pointer;padding:8px;border-radius:50%;color:var(--text2);font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.icon-btn:hover{background:var(--surface2);}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700;color:#fff;}
+
+/* ===== SIDEBAR ===== */
+.layout{display:flex;}
+.sidebar{width:240px;flex-shrink:0;padding:12px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;scrollbar-width:thin;}
+.sidebar.mini{width:72px;}
+.sb-item{display:flex;align-items:center;gap:16px;padding:10px 20px;cursor:pointer;border-radius:10px;margin:1px 8px;transition:background .15s;font-size:14px;color:var(--text2);text-decoration:none;}
+.sb-item:hover{background:var(--surface2);color:var(--text);}
+.sb-item.active{background:var(--surface2);color:var(--text);font-weight:600;}
+.sb-icon{font-size:20px;flex-shrink:0;}
+.sb-label{}
+.sidebar.mini .sb-label{display:none;}
+.sidebar.mini .sb-item{flex-direction:column;gap:4px;padding:14px 0;margin:1px 0;border-radius:0;font-size:10px;}
+.sidebar.mini .sb-label{display:block;font-size:10px;}
+.sb-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.sb-section-title{font-size:13px;font-weight:600;color:var(--text2);padding:8px 20px 4px;}
+.sidebar.mini .sb-section-title{display:none;}
+
+/* ===== HOME ===== */
+#homePage .content{flex:1;min-width:0;}
+.chip-bar{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;background:var(--bg);z-index:100;border-bottom:1px solid var(--border);}
+.chip-bar::-webkit-scrollbar{display:none;}
+.chip{background:var(--surface2);color:var(--text);padding:6px 14px;border-radius:8px;font-size:14px;cursor:pointer;white-space:nowrap;border:none;transition:background .2s;}
+.chip:hover{background:var(--border);}
+.chip.active{background:var(--text);color:var(--bg);}
+
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:16px;}
+.video-card{cursor:pointer;border-radius:var(--radius);overflow:hidden;transition:transform .15s;}
+.video-card:hover{transform:translateY(-2px);}
+.thumb-wrap{position:relative;aspect-ratio:16/9;background:var(--surface2);border-radius:var(--radius);overflow:hidden;}
+.thumb-wrap img{width:100%;height:100%;object-fit:cover;}
+.thumb-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--surface);}
+.duration{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.85);color:#fff;font-size:12px;padding:2px 5px;border-radius:4px;font-weight:600;}
+.progress-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--accent);}
+.card-info{display:flex;gap:10px;padding:10px 0 0;}
+.channel-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;}
+.card-meta{flex:1;min-width:0;}
+.card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-channel{font-size:13px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:4px;}
+.verified{color:#aaa;font-size:13px;}
+.card-stats{font-size:13px;color:var(--text2);}
+
+/* ===== WATCH PAGE ===== */
+#watchPage{display:none;}
+#watchPage.active{display:flex;gap:24px;padding:24px 16px;max-width:1600px;margin:0 auto;}
+.watch-main{flex:1;min-width:0;}
+.player-wrap{background:#000;border-radius:var(--radius);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:12px;}
+.player-wrap iframe{width:100%;height:100%;border:none;}
+.player-thumb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--surface);cursor:pointer;}
+.big-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s;}
+.big-play-btn{width:68px;height:48px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;}
+.video-title-lg{font-size:20px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:10px;}
+.video-actions{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.action-group{display:flex;background:var(--surface2);border-radius:40px;overflow:hidden;}
+.action-btn{background:none;border:none;cursor:pointer;padding:9px 16px;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px;transition:background .2s;white-space:nowrap;}
+.action-btn:hover{background:var(--border);}
+.action-btn.liked{color:var(--accent);}
+.action-sep{width:1px;background:var(--border);margin:6px 0;}
+.action-solo{background:var(--surface2);border:none;cursor:pointer;padding:9px 16px;font-size:14px;color:var(--text);border-radius:40px;display:flex;align-items:center;gap:6px;transition:background .2s;white-space:nowrap;}
+.action-solo:hover{background:var(--border);}
+
+/* Channel info */
+.channel-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.channel-av-lg{width:42px;height:42px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;}
+.channel-info-lg{flex:1;}
+.channel-name-lg{font-size:15px;font-weight:700;color:var(--text);}
+.channel-subs{font-size:13px;color:var(--text2);}
+.sub-btn{background:var(--text);color:var(--bg);border:none;padding:9px 18px;border-radius:20px;cursor:pointer;font-size:14px;font-weight:600;transition:opacity .2s;}
+.sub-btn:hover{opacity:.85;}
+.sub-btn.subbed{background:var(--surface2);color:var(--text);}
+
+/* Description box */
+.desc-box{background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:16px;cursor:pointer;}
+.desc-stats{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.desc-text{font-size:14px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.desc-box.expanded .desc-text{-webkit-line-clamp:unset;}
+
+/* Comments */
+.comments-section{margin-top:8px;}
+.comments-header{font-size:16px;font-weight:700;margin-bottom:16px;}
+.comment-input-row{display:flex;gap:12px;margin-bottom:20px;}
+.comment-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:6px 0;font-size:14px;color:var(--text);outline:none;}
+.comment-input:focus{border-bottom-color:var(--text);}
+.comment-submit{background:var(--surface2);border:none;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px;color:var(--text);font-weight:600;}
+.comment{display:flex;gap:10px;margin-bottom:18px;}
+.comment-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.comment-body .name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.comment-body .time{font-size:12px;color:var(--text3);margin-left:6px;font-weight:400;}
+.comment-body .text{font-size:14px;color:var(--text);line-height:1.5;}
+.comment-actions{display:flex;gap:12px;margin-top:6px;}
+.comment-act{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text2);padding:2px 0;}
+.comment-act:hover{color:var(--text);}
+
+/* Watch sidebar */
+.watch-side{width:400px;flex-shrink:0;}
+.up-next-label{font-size:15px;font-weight:600;margin-bottom:12px;}
+.side-card{display:flex;gap:8px;cursor:pointer;margin-bottom:8px;border-radius:10px;padding:6px;transition:background .15s;}
+.side-card:hover{background:var(--surface2);}
+.side-thumb{width:168px;flex-shrink:0;aspect-ratio:16/9;border-radius:8px;overflow:hidden;position:relative;background:var(--surface2);}
+.side-thumb img{width:100%;height:100%;object-fit:cover;}
+.side-thumb-em{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.side-dur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.85);color:#fff;font-size:11px;padding:1px 4px;border-radius:3px;font-weight:600;}
+.side-meta{flex:1;min-width:0;}
+.side-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.side-channel{font-size:12px;color:var(--text2);margin-top:3px;}
+.side-stats{font-size:12px;color:var(--text2);}
+
+/* ===== SEARCH RESULTS ===== */
+#searchPage{display:none;padding:16px;max-width:900px;}
+#searchPage.active{display:block;}
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;}
+.filter-chip{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap;border:none;}
+.filter-chip:hover{background:var(--border);}
+.filter-chip.active{background:var(--text);color:var(--bg);}
+.search-card{display:flex;gap:14px;margin-bottom:16px;cursor:pointer;border-radius:10px;padding:8px;}
+.search-card:hover{background:var(--surface2);}
+.search-thumb{width:246px;flex-shrink:0;aspect-ratio:16/9;border-radius:10px;overflow:hidden;position:relative;background:var(--surface2);}
+.search-thumb img{width:100%;height:100%;object-fit:cover;}
+.search-thumb-em{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.s-dur{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.85);color:#fff;font-size:12px;padding:2px 5px;border-radius:4px;font-weight:600;}
+.search-meta{flex:1;min-width:0;}
+.search-title{font-size:17px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:6px;}
+.search-info{font-size:13px;color:var(--text2);margin-bottom:6px;}
+.search-desc{font-size:13px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* ===== TRENDING ===== */
+#trendingPage{display:none;padding:24px;max-width:900px;}
+#trendingPage.active{display:block;}
+.trend-header{font-size:22px;font-weight:700;margin-bottom:6px;}
+.trend-desc{font-size:14px;color:var(--text2);margin-bottom:20px;}
+.trend-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.trend-tab{padding:10px 20px;font-size:14px;color:var(--text2);cursor:pointer;border-bottom:3px solid transparent;transition:color .15s;}
+.trend-tab:hover{color:var(--text);}
+.trend-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+/* ===== SHORTS ===== */
+#shortsPage{display:none;padding:16px;}
+#shortsPage.active{display:block;}
+.shorts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+.short-card{cursor:pointer;border-radius:12px;overflow:hidden;}
+.short-thumb{aspect-ratio:9/16;background:var(--surface2);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;}
+.short-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,.8));}
+.short-title{font-size:14px;font-weight:600;color:#fff;line-height:1.3;}
+.short-views{font-size:12px;color:rgba(255,255,255,.8);margin-top:3px;}
+
+/* ===== SUBSCRIPTIONS ===== */
+#subscriptionsPage{display:none;padding:24px;}
+#subscriptionsPage.active{display:block;}
+.subs-header{font-size:20px;font-weight:700;margin-bottom:20px;}
+.no-subs{text-align:center;padding:60px;color:var(--text2);}
+.no-subs-icon{font-size:64px;margin-bottom:12px;}
+.no-subs h3{font-size:18px;margin-bottom:6px;}
+
+/* ===== LIBRARY ===== */
+#libraryPage{display:none;padding:24px;}
+#libraryPage.active{display:block;}
+.lib-section{margin-bottom:28px;}
+.lib-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.lib-section-title{font-size:18px;font-weight:700;}
+.see-all{color:var(--text2);font-size:14px;cursor:pointer;}
+.see-all:hover{color:var(--text);}
+.lib-scroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.lib-scroll::-webkit-scrollbar{display:none;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;z-index:999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){.watch-side{width:320px;}}
+@media(max-width:900px){
+  #watchPage.active{flex-direction:column;}
+  .watch-side{width:100%;}
+  .sidebar{display:none;}
+  .tb-search{margin:0 8px;}
 }
-
-.topbar{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo{
-    font-size:28px;
-    font-weight:900;
-    color:#ff0000;
-}
-
-.search-box{
-    flex:1;
-    display:flex;
-}
-
-.search-box input{
-    flex:1;
-    min-width:0;
-    padding:12px;
-    border:none;
-    outline:none;
-    border-radius:25px 0 0 25px;
-    background:#1f1f1f;
-    color:white;
-}
-
-.search-box button{
-    border:none;
-    padding:12px 18px;
-    background:#ff0000;
-    color:white;
-    border-radius:0 25px 25px 0;
-    cursor:pointer;
-}
-
-.categories{
-    display:flex;
-    overflow-x:auto;
-    gap:10px;
-    margin-top:12px;
-}
-
-.categories::-webkit-scrollbar{
-    display:none;
-}
-
-.category{
-    background:#272727;
-    padding:8px 15px;
-    border-radius:10px;
-    white-space:nowrap;
-    cursor:pointer;
-}
-
-.category.active{
-    background:white;
-    color:black;
-}
-
-#player iframe{
-    width:100%;
-    aspect-ratio:16/9;
-    border:none;
-}
-
-#videos{
-    padding:15px;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:20px;
-}
-
-.video{
-    background:#181818;
-    border-radius:15px;
-    overflow:hidden;
-    cursor:pointer;
-}
-
-.video:hover{
-    transform:translateY(-3px);
-}
-
-.video img{
-    width:100%;
-    display:block;
-}
-
-.video h3{
-    padding:10px;
-    font-size:15px;
-}
-
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    height:60px;
-    background:#121212;
-    border-top:1px solid #222;
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-}
-
-.bottom-item{
-    text-align:center;
-    font-size:12px;
+@media(max-width:600px){
+  .video-grid{grid-template-columns:1fr;}
+  .search-card{flex-direction:column;}
+  .search-thumb{width:100%;}
+  .tb-search .mic-btn{display:none;}
+  .brand-name{font-size:16px;}
 }
 </style>
 </head>
+<body data-theme="dark">
 
-<body>
-
-<header>
-
+<!-- ===== TOPBAR ===== -->
 <div class="topbar">
-    <div class="logo">InternTube</div>
-
-    <div class="search-box">
-        <input id="search" placeholder="Search videos or channels">
-        <button onclick="searchVideos()">🔍</button>
+  <div class="tb-left">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <a class="brand" onclick="showPage('home');return false;" href="#">
+      <div class="brand-icon"></div>
+      <div class="brand-name">View<span>Tube</span></div>
+    </a>
+  </div>
+  <div class="tb-search">
+    <div class="search-form">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search"
+        onkeydown="if(event.key==='Enter')doSearch(this.value)" autocomplete="off">
+      <button class="search-submit" onclick="doSearch(document.getElementById('searchInput').value)">🔍</button>
     </div>
+    <button class="mic-btn" onclick="showToast('🎙️ Voice search coming soon!')">🎙️</button>
+  </div>
+  <div class="tb-right">
+    <button class="icon-btn" onclick="showToast('📹 Upload feature coming soon!')">📹</button>
+    <button class="icon-btn" onclick="toggleTheme()">🌓</button>
+    <button class="icon-btn" onclick="showToast('🔔 Notifications coming soon!')">🔔</button>
+    <div class="avatar" onclick="showToast('👤 Profile coming soon!')">V</div>
+  </div>
 </div>
 
-<div class="categories">
-    <div class="category active">All</div>
-    <div class="category" onclick="quickSearch('gaming')">Gaming</div>
-    <div class="category" onclick="quickSearch('music')">Music</div>
-    <div class="category" onclick="quickSearch('anime')">Anime</div>
-    <div class="category" onclick="quickSearch('minecraft')">Minecraft</div>
-    <div class="category" onclick="quickSearch('shorts')">Shorts</div>
+<!-- ===== MAIN LAYOUT ===== -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a class="sb-item active" onclick="showPage('home')" href="#"><span class="sb-icon">🏠</span><span class="sb-label">Home</span></a>
+  <a class="sb-item" onclick="showPage('shorts')" href="#"><span class="sb-icon">⚡</span><span class="sb-label">Shorts</span></a>
+  <a class="sb-item" onclick="showPage('subscriptions')" href="#"><span class="sb-icon">📺</span><span class="sb-label">Subscriptions</span></a>
+  <hr class="sb-divider">
+  <div class="sb-section-title">You</div>
+  <a class="sb-item" onclick="showPage('library')" href="#"><span class="sb-icon">📚</span><span class="sb-label">Library</span></a>
+  <a class="sb-item" onclick="showPage('library')" href="#"><span class="sb-icon">🕐</span><span class="sb-label">History</span></a>
+  <a class="sb-item" onclick="showPage('library')" href="#"><span class="sb-icon">▶️</span><span class="sb-label">Your videos</span></a>
+  <a class="sb-item" onclick="showPage('library')" href="#"><span class="sb-icon">⏰</span><span class="sb-label">Watch later</span></a>
+  <a class="sb-item" onclick="showPage('library')" href="#"><span class="sb-icon">👍</span><span class="sb-label">Liked videos</span></a>
+  <hr class="sb-divider">
+  <div class="sb-section-title">Explore</div>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">🔥</span><span class="sb-label">Trending</span></a>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">🛍️</span><span class="sb-label">Shopping</span></a>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">🎵</span><span class="sb-label">Music</span></a>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">🎮</span><span class="sb-label">Gaming</span></a>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">📰</span><span class="sb-label">News</span></a>
+  <a class="sb-item" onclick="showPage('trending')" href="#"><span class="sb-icon">🏆</span><span class="sb-label">Sports</span></a>
+  <hr class="sb-divider">
+  <div class="sb-section-title">More from ViewTube</div>
+  <a class="sb-item" href="#"><span class="sb-icon">⚙️</span><span class="sb-label">Settings</span></a>
+  <a class="sb-item" href="#"><span class="sb-icon">🚩</span><span class="sb-label">Report</span></a>
+  <a class="sb-item" href="#"><span class="sb-icon">❓</span><span class="sb-label">Help</span></a>
 </div>
 
-</header>
+<!-- ===== PAGES ===== -->
 
-<div id="player"></div>
-
-<div id="videos">
-    <h2 style="text-align:center">Search something to start watching 🚀</h2>
+<!-- HOME -->
+<div id="homePage" class="page active" style="flex:1;min-width:0;">
+  <div class="chip-bar" id="chipBar"></div>
+  <div class="video-grid" id="videoGrid"></div>
 </div>
 
-<div class="bottom-nav">
-    <div class="bottom-item">🏠<br>Home</div>
-    <div class="bottom-item" onclick="quickSearch('shorts')">🎬<br>Shorts</div>
-    <div class="bottom-item">🔥<br>Trending</div>
-    <div class="bottom-item">👤<br>You</div>
-</div>
+<!-- WATCH -->
+<div id="watchPage"></div>
 
-<script>
+<!-- SEARCH -->
+<div id="searchPage"></div>
 
-async function searchVideos(query=null){
-
-    if(!query){
-        query=document.getElementById("search").value;
-    }
-
-    if(!query) return;
-
-    document.getElementById("videos").innerHTML =
-    "<h2 style='text-align:center'>Loading...</h2>";
-
-    try{
-
-        const response = await fetch(
-            `/search?q=${encodeURIComponent(query)}`
-        );
-
-        const data = await response.json();
-
-        let html = "";
-
-        data.items.forEach(video=>{
-
-            html += `
-            <div class="video"
-                onclick="playVideo('${video.id.videoId}')">
-
-                <img src="${video.snippet.thumbnails.high.url}">
-
-                <h3>${video.snippet.title}</h3>
-
-            </div>
-            `;
-        });
-
-        document.getElementById("videos").innerHTML =
-            html || "<h2 style='text-align:center'>No videos found</h2>";
-
-    }catch(err){
-
-        document.getElementById("videos").innerHTML =
-        "<h2 style='text-align:center'>Failed to load videos</h2>";
-
-        console.error(err);
-    }
-}
-
-function quickSearch(q){
-    document.getElementById("search").value=q;
-    searchVideos(q);
-}
-
-function playVideo(id){
-
-    document.getElementById("player").innerHTML = `
-    <iframe
-        src="https://www.youtube.com/embed/${id}?autoplay=1"
-        allowfullscreen
-        allow="autoplay">
-    </iframe>
-    `;
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
-
-document.getElementById("search")
-.addEventListener("keypress",function(e){
-    if(e.key==="Enter"){
-        searchVideos();
-    }
-});
-
-</script>
-
-</body>
-</html>
+<!-- TRENDING -->
+<div id="trendingPage">
+  <div class="trend-header">🔥 Trending</div>
+  <div class="trend-desc">Top videos on ViewTube right now</div>
+  <div class="trend-tabs"
