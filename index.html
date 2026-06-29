@@ -20,8 +20,8 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .tb-search input::placeholder{color:var(--text3);}
 .tb-search button{background:none;border:none;padding:8px 12px;cursor:pointer;color:var(--text2);font-size:16px;flex-shrink:0;}
 .tb-right{display:flex;align-items:center;gap:2px;flex-shrink:0;}
-.icon-btn{background:none;border:none;cursor:pointer;padding:8px;border-radius:50%;color:var(--text2);font-size:18px;display:flex;align-items:center;justify-content:center;}
 .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.icon-btn{background:none;border:none;cursor:pointer;padding:8px;border-radius:50%;color:var(--text2);font-size:18px;display:flex;align-items:center;justify-content:center;}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;width:100%;background:var(--bg);border-top:1px solid var(--border);display:flex;z-index:200;}
 .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;cursor:pointer;font-size:10px;color:var(--text3);gap:3px;border:none;background:none;}
 .bn-item.active{color:var(--accent);}
@@ -43,7 +43,7 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .card-meta{flex:1;min-width:0;}
 .card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-sub{font-size:12px;color:var(--text2);margin-top:3px;}
-.card-ch-name{cursor:pointer;text-decoration:underline;color:var(--text2);}
+.card-ch-name{cursor:pointer;text-decoration:underline;}
 .watch-player{width:100%;aspect-ratio:16/9;background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .watch-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .watch-emoji{font-size:72px;position:absolute;}
@@ -74,8 +74,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .com-name{font-size:12px;font-weight:700;color:var(--text);}
 .com-time{font-size:11px;color:var(--text3);margin-left:5px;font-weight:400;}
 .com-text{font-size:13px;color:var(--text);line-height:1.5;margin-top:2px;}
-.com-acts{display:flex;gap:10px;margin-top:4px;}
-.com-act{background:none;border:none;font-size:12px;color:var(--text2);cursor:pointer;}
 .up-next-label{font-size:15px;font-weight:700;padding:12px 12px 8px;border-top:6px solid var(--surface);}
 .side-card{display:flex;gap:8px;padding:6px 12px;cursor:pointer;border-bottom:1px solid var(--border);}
 .side-thumb{width:120px;flex-shrink:0;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:var(--surface2);position:relative;display:flex;align-items:center;justify-content:center;font-size:24px;}
@@ -98,12 +96,11 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .trend-meta{flex:1;min-width:0;}
 .trend-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .trend-info{font-size:12px;color:var(--text2);margin-top:4px;}
-/* SHORTS */
 #shortsPage{display:none;position:fixed;inset:0;background:#000;z-index:300;}
 #shortsPage.active{display:block;}
 .shorts-topbar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;z-index:10;background:linear-gradient(rgba(0,0,0,.6),transparent);}
 .shorts-topbar-title{font-size:16px;font-weight:700;color:#fff;}
-.short-slide{position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.short-slide{position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .short-slide iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .s-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
 .s-emoji{font-size:80px;position:relative;z-index:1;}
@@ -117,7 +114,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .s-act{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;}
 .s-act-icon{font-size:26px;}
 .s-act-label{font-size:11px;color:rgba(255,255,255,.8);}
-/* CHANNEL PAGE */
 #channelPage{display:none;width:100%;padding-bottom:70px;}
 #channelPage.active{display:block;}
 .ch-page-topbar{display:flex;align-items:center;gap:8px;padding:10px 12px;position:sticky;top:0;background:var(--bg);z-index:100;border-bottom:1px solid var(--border);}
@@ -145,7 +141,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 .ch-vid-info{padding:6px 8px 8px;}
 .ch-vid-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .ch-vid-stats{font-size:11px;color:var(--text2);margin-top:3px;}
-/* PROFILE */
 .profile-header{background:linear-gradient(135deg,#ff0000,#cc0000);padding:30px 16px 20px;text-align:center;}
 .profile-av{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 10px;}
 .profile-name{font-size:18px;font-weight:700;color:#fff;}
@@ -180,27 +175,22 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
   </div>
 </div>
 
-<!-- HOME -->
 <div id="homePage" class="page active">
   <div class="chip-bar" id="chipBar"></div>
   <div id="homeContent"></div>
 </div>
 
-<!-- SEARCH -->
 <div id="searchPage" class="page">
   <div id="searchContent" style="padding-top:8px;"></div>
 </div>
 
-<!-- TRENDING -->
 <div id="trendingPage" class="page">
   <div style="padding:14px 12px 6px;font-size:18px;font-weight:800;">🔥 Trending</div>
   <div id="trendingContent"></div>
 </div>
 
-<!-- WATCH -->
 <div id="watchPage" class="page"></div>
 
-<!-- CHANNEL -->
 <div id="channelPage">
   <div class="ch-page-topbar">
     <button class="ch-back" onclick="closeChannel()">←</button>
@@ -230,7 +220,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
   <div id="chContent"></div>
 </div>
 
-<!-- SHORTS -->
 <div id="shortsPage">
   <div class="shorts-topbar">
     <span class="shorts-topbar-title">⚡ Shorts</span>
@@ -239,7 +228,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
   <div id="shortSlide"></div>
 </div>
 
-<!-- PROFILE -->
 <div id="profilePage" class="page">
   <div class="profile-header">
     <div class="profile-av">V</div>
@@ -265,6 +253,6 @@ html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);fo
 
 <div class="toast" id="toast"></div>
 
-<script>
-const COLORS=['#f44336','#e91e63','#9c27b0','#3f51b5','#2196f3','#00bcd4','#4caf50','#ff9800','#795548','#607d8b'];
-function clr(s){return COLORS[(s||'V').charCodeAt(0)%COLORS.length]
+<script src="script.js"></script>
+</body>
+</html>
